@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Socket</title>
+    <style>
+      #chat{
+        height: 500px;
+        border: 3px solid blue;
+      }
+      #contentWrap{
+        display: none;
+      }
+      #chatWrap{
+        float: left;
+        border: 2px purple dotted;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="WrapName">
+      <p>Enter a username:</p>
+      <p id="nameError"></p>
+      <form id="setName">
+        <input size="35" id="nickname">
+        <input type="submit">
+      </form>
+    </div>
+    <h1>Hey Buddy</h1>
+
+  <div id="contentWrap">
+    <div id="chatWrap">
+      <div id="chat"></div>
+      <form id="send-messages">
+          <input size="35" id='messages'>
+          <input type="submit">
+      </form>
+    </div>
+    <div id="users"></div>
+  </div>
+
+
+
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js">
+
+    </script>
+    <script type="text/javascript" src="socket.io/socket.io.js"></script>
+
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+
+        var socket = io.connect();
+            $messageForm = $('#send-messages');
+            $messageBox = $('#messages');
+            $chat = $('#chat');
+            $nickForm = $('#setName');
+            $nickError = $('#nameError');
+            $nickBox = $('#nickname');
+            $users = $('#users');
+
+
+        socket.on('usernames', function(data){
+          var html = '';
+          for(i=0; i < data.length; i++){
+            html += data[i] + "<br/>";
+          }
+          $users.html(html)
+        })
+
+        $nickForm.submit(function(e){
+              e.preventDefault();
+              socket.emit('new user', $nickBox.val(), function(data){
+                if(data){
+                  $('#WrapName').hide();
+                  $('#contentWrap').show();
+                }
+                else{
+                  $nickError.html('That username is already taken! Try Again Stupid Head')
+                }
+              })
+              $nickBox.val('');
+            })
+
+
+        $messageForm.submit(function(e){
+          e.preventDefault();
+          socket.emit('send message', $messageBox.val());
+          $messageBox.val('')
+        })
+
+        socket.on('new message', function(data){
+          $chat.append(data + "<br/s>")
+        })
+      })
+
+    </script>
+  </body>
+</html>

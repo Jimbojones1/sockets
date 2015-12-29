@@ -1,0 +1,23 @@
+{
+  "name": "sockets",
+  "version": "1.0.0",
+  "description": "project to learn sockets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jimbojones1/sockets.git"
+  },
+  "author": "Jim Haff",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jimbojones1/sockets/issues"
+  },
+  "homepage": "https://github.com/Jimbojones1/sockets#readme",
+  "devDependencies": {
+    "express": "^4.13.3",
+    "socket.io": "^1.3.7"
+  }
+}
